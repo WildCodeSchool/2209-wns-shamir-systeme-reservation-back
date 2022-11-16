@@ -1,0 +1,28 @@
+{
+  "name": "wildrent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WildCodeSchool/2209-wns-shamir-systeme-reservation-back.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WildCodeSchool/2209-wns-shamir-systeme-reservation-back/issues"
+  },
+  "homepage": "https://github.com/WildCodeSchool/2209-wns-shamir-systeme-reservation-back#readme",
+  "dependencies": {
+    "apollo-server": "^3.11.1",
+    "eslint": "^8.27.0",
+    "prettier": "^2.7.1",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1",
+    "typeorm": "^0.3.10",
+    "typescript": "^4.9.3"
+  }
+}
