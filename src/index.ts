@@ -1,22 +1,24 @@
+import "reflect-metadata";
 import { ApolloServer } from "apollo-server";
-import {dataSource} from "./tools/utils";
+import { dataSource } from "./tools/utils";
 import { buildSchema } from "type-graphql";
-
+import { ProductResolver } from "./resolvers/productResolver";
+import { ApolloServerPluginLandingPageLocalDefault } from "apollo-server-core";
 
 
 const port = 5000;
 
 const start = async (): Promise<void> => {
   await dataSource.initialize();
- /* const schema = await buildSchema({
-    resolvers: [],
-  });*/
+  const schema = await buildSchema({
+    resolvers: [ProductResolver],
+  });
   
   const server = new ApolloServer({ 
-    //schema,
+    schema,
     csrfPrevention: true,
     cache: "bounded",
-   // plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })], 
+    plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })], 
   }); 
 
   try {
