@@ -5,7 +5,11 @@ const repository = dataSource.getRepository(Product);
 
 export default {
   getAll: async (): Promise<Product[]> => {
-    const Products = await repository.find();
+    const Products = await repository.find({
+      relations: {
+        category: true,
+      }
+    });
     return Products;
   },
 };
