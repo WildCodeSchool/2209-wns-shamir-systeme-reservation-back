@@ -30,11 +30,12 @@ export default class Product {
   @Column({ type: "int"})
   quantity: number
 
+  @Field(()=> Category)
   @ManyToOne(() => Category, (category: Category) => category.products)
   @JoinColumn({name: "category_id"})
   category: Category
 
-  @OneToMany(() => Reservation, (reservation: Reservation) => reservation.product, {eager: true })
+  @OneToMany(() => Reservation, (reservation: Reservation) => reservation.product, {eager: true})
   reservations: Reservation[]
 
 }
