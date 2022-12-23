@@ -1,31 +1,40 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
-import Reservation from './Reservation';
-import User from './User';
+import { ObjectType, Field, Int } from "type-graphql";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
+import Reservation from "./Reservation";
+import User from "./User";
 
-
+@ObjectType()
 @Entity()
 export default class Order {
-  
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
-  @CreateDateColumn({type: 'timestamp'})
-  created_at: Date
+  @Field()
+  @CreateDateColumn({ type: "timestamp" })
+  created_at: Date;
 
-  @Column({ type: "float"})
-  total_price: number
+  @Field()
+  @Column({ type: "float" })
+  total_price: number;
 
-  @Column({ type: "int"})
-  status: number
+  @Field()
+  @Column({ type: "int" })
+  status: number;
 
+  @Field(() => [Reservation])
   @OneToMany(() => Reservation, (reservation: Reservation) => reservation.order)
-  reservations: Reservation[]
+  reservations: Reservation[];
 
   @ManyToOne(() => User, (user: User) => user.orders)
-  @JoinColumn({name: "customer_id"})
-  user: User
- 
-
-
+  @JoinColumn({ name: "customer_id" })
+  user: User;
 }
-
