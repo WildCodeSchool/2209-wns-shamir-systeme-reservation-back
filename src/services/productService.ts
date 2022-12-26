@@ -12,4 +12,9 @@ export default {
     });
     return Products;
   },
+
+  create: async (productData: Product): Promise<Product> => {
+    const product = await repository.save(productData);
+    return product;
+  }
 };
