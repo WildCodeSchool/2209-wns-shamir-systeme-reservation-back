@@ -6,6 +6,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from "apollo-server-core";
 import { UserResolver } from "../resolvers/userResolver";
 import authService from "../services/authService";
 import * as dotenv from "dotenv";
+import { CategoryResolver } from "../resolvers/categoryResolver";
 
 async function createServer(): Promise<ApolloServer> {
   // get the .env
@@ -14,7 +15,7 @@ async function createServer(): Promise<ApolloServer> {
   await dataSource.initialize();
 
   const schema = await buildSchema({
-    resolvers: [ProductResolver, UserResolver],
+    resolvers: [ProductResolver, UserResolver, CategoryResolver],
     validate: { forbidUnknownValues: false },
 
     // lié au décorateur @Authorized(["ADMIN"])
