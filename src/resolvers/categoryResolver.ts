@@ -10,7 +10,7 @@ export class CategoryResolver {
     return await categoryService.getAll();
   }
 
-  @Mutation(() => String)
+  @Mutation(() => Category)
   async createCategory(@Arg("name") name: string): Promise<Category> {
     return await categoryService.create(name);
   }
