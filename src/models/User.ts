@@ -32,7 +32,7 @@ export default class User {
   phone: string;
 
   @Field()
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar",  unique: true })
   email: string;
 
   @Column({ type: "varchar" })
