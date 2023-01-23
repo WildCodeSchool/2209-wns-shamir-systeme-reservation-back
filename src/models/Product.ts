@@ -8,7 +8,7 @@ import Reservation from './Reservation';
 export default class Product {
   @Field(()=> Int)
   @PrimaryGeneratedColumn()
-  id: number
+  id?: number
 
   @Field()
   @Column({ type: "varchar"})
@@ -35,8 +35,9 @@ export default class Product {
   @JoinColumn({name: "category_id"})
   category: Category
 
+  @Field(() => [Reservation])
   @OneToMany(() => Reservation, (reservation: Reservation) => reservation.product, {eager: true})
-  reservations: Reservation[]
+  reservations?: Reservation[]
 
 }
 

@@ -7,13 +7,14 @@ import Product from './Product';
 export default class Category {
   @Field(()=> Int)
   @PrimaryGeneratedColumn()
-  id: number
+  id?: number
 
   @Field()
   @Column({ type: "varchar"})
   name: string
 
+  @Field(() => [Product])
   @OneToMany(() => Product, (product: Product) => product.category, {eager: true})
-  products: Product[]
+  products?: Product[]
 }
 
