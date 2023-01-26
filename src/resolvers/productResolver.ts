@@ -11,6 +11,10 @@ export class ProductResolver {
     return await productService.getAll();
   }
 
+  @Query(() => [Product])
+  async getProductsByDate(@Arg('dateFrom')dateFrom: string, @Arg('dateTo')dateTo: string): Promise<Product[]> {
+    return await productService.getByDate(dateFrom, dateTo );
+  }
   
   @Mutation(() => Product  )
   async createProduct( 
