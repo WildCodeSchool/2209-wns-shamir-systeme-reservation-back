@@ -13,6 +13,11 @@ export class UserResolver {
     return await userService.getAll();
   }
 
+  @Query(() => Boolean)
+  async isAdmin(@Arg("token") token: string): Promise<Boolean> {
+    return await userService.isAdmin(token);
+  }
+  
   @Query(() => User)
   async getUser(
     @Arg("token") token: string,

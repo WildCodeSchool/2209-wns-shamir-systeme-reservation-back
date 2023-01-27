@@ -2,6 +2,7 @@ import { Repository } from "typeorm";
 import User from "../models/User";
 import { dataSource } from "../tools/utils";
 import * as argon2 from "argon2";
+import authService from "../services/authService";
 import userType from "../inputs/UserType";
 
 const repository: Repository<User> = dataSource.getRepository(User);
@@ -20,6 +21,13 @@ const getAll = async (): Promise<User[]> => {
       id: "DESC",
     },
   });
+};
+
+const isAdmin = async (token: string): Promise<Boolean> => {
+  const payload = JSON.parse(JSON.stringify(authService.verifyToken(token)));
+  const roles = payload.role;
+  const isAdmin = roles.find((role: {id: string, name: string}) => role.name === "ADMIN")
+  return (isAdmin !== undefined);
 };
 
 const create = async (
@@ -48,5 +56,6 @@ export default {
   getByEmail,
   create,
   getAll,
+  isAdmin,
   update
 };
