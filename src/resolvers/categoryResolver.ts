@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
 import Category from "../models/Category";
 import categoryService from "../services/categoryService";
 
@@ -10,6 +10,7 @@ export class CategoryResolver {
     return await categoryService.getAll();
   }
 
+  @Authorized(["ADMIN"])
   @Mutation(() => Category)
   async createCategory(@Arg("name") name: string): Promise<Category> {
     return await categoryService.create(name);

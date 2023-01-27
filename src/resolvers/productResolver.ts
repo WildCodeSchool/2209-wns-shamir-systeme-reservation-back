@@ -16,6 +16,7 @@ export class ProductResolver {
     return await productService.getByDate(dateFrom, dateTo );
   }
   
+  @Authorized(["ADMIN"])
   @Mutation(() => Product  )
   async createProduct( 
   @Arg('product') product : ProductType

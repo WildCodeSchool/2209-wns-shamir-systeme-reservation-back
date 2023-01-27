@@ -12,6 +12,11 @@ export class UserResolver {
     return await userService.getAll();
   }
 
+  @Query(() => Boolean)
+  async isAdmin(@Arg("token") token: string): Promise<Boolean> {
+    return await userService.isAdmin(token);
+  }
+
   @Mutation(() => String)
   async createUser(
     @Arg("firstname") firstname: string,
