@@ -2,6 +2,7 @@ import { Repository } from "typeorm";
 import User from "../models/User";
 import { dataSource } from "../tools/utils";
 import * as argon2 from "argon2";
+import userType from "../inputs/UserType";
 
 const repository: Repository<User> = dataSource.getRepository(User);
 
@@ -38,8 +39,14 @@ const create = async (
   return await repository.save(newUser);
 };
 
+const update = async (userId: number, dataUser: userType): Promise<User | null> => {
+  await repository.update(userId, dataUser);
+  return repository.findOneBy({ id: userId });
+};
+
 export default {
   getByEmail,
   create,
   getAll,
+  update
 };
