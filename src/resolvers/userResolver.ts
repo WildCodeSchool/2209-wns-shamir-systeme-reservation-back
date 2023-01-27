@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Arg, Authorized } from "type-graphql";
 import User from "../models/User";
 import authService from "../services/authService";
 import userService from "../services/userService";
+import userType from '../inputs/UserType';
 
 @Resolver(User)
 export class UserResolver {
@@ -15,6 +16,22 @@ export class UserResolver {
   @Query(() => Boolean)
   async isAdmin(@Arg("token") token: string): Promise<Boolean> {
     return await userService.isAdmin(token);
+  }
+  
+  @Query(() => User)
+  async getUser(
+    @Arg("token") token: string,
+  ): Promise<any> {
+    const userPayload = authService.verifyToken(token);
+    return await userService.getByEmail(Object.values(userPayload)[0]);
+  }
+
+  @Mutation(() => User)
+  async updateUser(
+    @Arg("userId") userId: number,
+    @Arg("userData") userData: userType
+  ): Promise<any> {
+    return await userService.update(userId, userData);
   }
 
   @Mutation(() => String)
