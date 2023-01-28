@@ -5,7 +5,11 @@ const repository = dataSource.getRepository(Category);
 
 const categoryService = {
   getAll: async (): Promise<Category[]> => {
-    const categories = await repository.find();
+    const categories = await repository.find({
+      relations: {
+        products: true,
+      }
+    });
     return categories;
   },
 
