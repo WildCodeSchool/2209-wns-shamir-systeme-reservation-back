@@ -12,16 +12,23 @@ export class ProductResolver {
   }
 
   @Query(() => [Product])
-  async getProductsByDate(@Arg('dateFrom')dateFrom: string, @Arg('dateTo')dateTo: string): Promise<Product[]> {
-    return await productService.getByDate(dateFrom, dateTo );
+  async getProductsByDate(
+    @Arg("dateFrom") dateFrom: string,
+    @Arg("dateTo") dateTo: string
+  ): Promise<Product[]> {
+    return await productService.getByDate(dateFrom, dateTo);
+  }
+
+  @Authorized(["ADMIN"])
+  @Mutation(() => Product)
+  async createProduct(@Arg("product") product: ProductType): Promise<Product> {
+    return await productService.create(product);
   }
   
   @Authorized(["ADMIN"])
-  @Mutation(() => Product  )
-  async createProduct( 
-  @Arg('product') product : ProductType
-    ): Promise<Product> {
-    
-    return await productService.create(product);
+  @Mutation(() => String)
+  async deleteProduct(@Arg("id") id: number): Promise<string> {
+    await productService.delete(id);
+    return "ok";
   }
 }
