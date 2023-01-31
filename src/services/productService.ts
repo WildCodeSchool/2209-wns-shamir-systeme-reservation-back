@@ -15,6 +15,15 @@ export default {
     return Products;
   },
 
+  getLastFour: async (): Promise<Product[]> => {
+    const products = productRepository
+      .createQueryBuilder("product")
+      .orderBy("product.id", "DESC")
+      .take(4)
+      .getMany();
+    return products;
+  },
+
   getByDate: async (dateFrom: string, dateTo: string): Promise<Product[]> => {
     const allProducts: Product[] = await productRepository.find({
       relations: {
