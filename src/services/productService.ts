@@ -63,6 +63,11 @@ export default {
     return product;
   },
 
+  update: async (id: number, product: Product): Promise<Product | null> => {
+    await productRepository.update(id, product);
+    return await productRepository.findOneBy({ id });
+  },
+
   delete: async (id: number): Promise<void> => {
     await productRepository.delete(id);
   },
