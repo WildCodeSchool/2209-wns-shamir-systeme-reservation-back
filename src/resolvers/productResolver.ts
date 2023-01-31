@@ -24,6 +24,17 @@ export class ProductResolver {
   async createProduct(@Arg("product") product: ProductType): Promise<Product> {
     return await productService.create(product);
   }
+
+  @Authorized(["ADMIN"])
+  @Mutation(() => Product)
+  async updateProduct(
+    @Arg("id") id: number,
+    @Arg("product") product: ProductType
+  ): Promise<Product | null> {
+    const toto = await productService.update(id, product);
+    console.log("TOTO",toto)
+    return toto
+  }
   
   @Authorized(["ADMIN"])
   @Mutation(() => String)
