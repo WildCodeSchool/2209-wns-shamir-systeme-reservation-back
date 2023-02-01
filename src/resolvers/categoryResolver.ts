@@ -15,4 +15,11 @@ export class CategoryResolver {
   async createCategory(@Arg("name") name: string): Promise<Category> {
     return await categoryService.create(name);
   }
+    
+  @Authorized(["ADMIN"])
+  @Mutation(() => String)
+  async deleteCategory(@Arg("id") id: number): Promise<string> {
+    const response = await categoryService.delete(id);
+    return response;
+  }
 }
