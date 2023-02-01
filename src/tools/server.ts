@@ -7,6 +7,7 @@ import { UserResolver } from "../resolvers/userResolver";
 import authService from "../services/authService";
 import * as dotenv from "dotenv";
 import { CategoryResolver } from "../resolvers/categoryResolver";
+import { ReservationResolver } from "../resolvers/reservationResolver";
 
 async function createServer(): Promise<ApolloServer> {
   // get the .env
@@ -15,7 +16,7 @@ async function createServer(): Promise<ApolloServer> {
   await dataSource.initialize();
 
   const schema = await buildSchema({
-    resolvers: [ProductResolver, UserResolver, CategoryResolver],
+    resolvers: [ProductResolver, UserResolver, CategoryResolver, ReservationResolver],
     validate: { forbidUnknownValues: false },
 
     // lié au décorateur @Authorized(["ADMIN"])

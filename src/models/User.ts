@@ -40,7 +40,7 @@ export default class User {
 
   @Field(() => [Order])
   @OneToMany(() => Order, (order: Order) => order.user, { eager: true })
-  orders: Order[];
+  orders?: Order[];
 
   @Field(() => [Role])
   @ManyToMany(() => Role)
