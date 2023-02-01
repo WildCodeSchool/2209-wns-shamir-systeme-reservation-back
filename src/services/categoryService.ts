@@ -10,7 +10,7 @@ const categoryService = {
         products: true,
       },
       order: {
-        id: "DESC",
+        id: "ASC",
       },
     });
     return categories;

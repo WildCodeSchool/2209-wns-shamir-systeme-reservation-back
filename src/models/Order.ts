@@ -33,7 +33,8 @@ export default class Order {
   @Field(() => [Reservation])
   @OneToMany(() => Reservation, (reservation: Reservation) => reservation.order)
   reservations: Reservation[];
-
+  
+  @Field(() => User)
   @ManyToOne(() => User, (user: User) => user.orders)
   @JoinColumn({ name: "customer_id" })
   user: User;
