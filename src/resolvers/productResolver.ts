@@ -36,9 +36,7 @@ export class ProductResolver {
     @Arg("id") id: number,
     @Arg("product") product: ProductType
   ): Promise<Product | null> {
-    const toto = await productService.update(id, product);
-    console.log("TOTO",toto)
-    return toto
+    return await productService.update(id, product);
   }
   
   @Authorized(["ADMIN"])
