@@ -2,7 +2,7 @@ import { InputType, Field } from "type-graphql";
 import UserType from "./UserType";
 
 @InputType()
-export class ReservationType {
+export class OrderType {
   @Field()
   created_at: Date
 

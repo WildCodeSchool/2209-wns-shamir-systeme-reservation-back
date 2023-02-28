@@ -1,7 +1,6 @@
 import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
-import userType from "../inputs/UserType";
+import { ReservationType } from "../inputs/ReservationType";
 import Order from "../models/Order";
-import User from "../models/User";
 import orderService from "../services/orderService";
 
 
@@ -22,5 +21,12 @@ export class OrderResolver {
     return await orderService.getById(id);
   }
 
+  @Mutation(() => Order)
+  async createOrder(
+    @Arg("reservations") reservations: [ReservationType],
+    @Arg("userId") userId: number,
+  ): Promise<Order | null> {
+    return await orderService.create(reservations, userId);
+  }
 
 }
