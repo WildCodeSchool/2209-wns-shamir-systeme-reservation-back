@@ -30,9 +30,9 @@ export default class Order {
   @Column({ type: "int" })
   status: number;
 
-  @Field(() => [Reservation])
+  @Field(() => [Reservation] , { nullable: true })
   @OneToMany(() => Reservation, (reservation: Reservation) => reservation.order)
-  reservations: Reservation[];
+  reservations?: Reservation[];
 
   @ManyToOne(() => User, (user: User) => user.orders)
   @JoinColumn({ name: "customer_id" })
