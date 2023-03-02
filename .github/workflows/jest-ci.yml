@@ -3,24 +3,29 @@ name: jest-ci
 on: push
 
 jobs:
+  # Label
   test-back:
     runs-on: ubuntu-latest
+
+    # Service containers to run
     services:
+      # Label
       postgres:
-        image: postgres:latest
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
         env:
-          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DATABASE }}
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
         ports:
+          # Maps tcp port 5432 on service container to the host
           - 5432:5432
-    env:
-      PORT: ${{ secrets.PORT }}
-      DBPORT: 5432
-      USERNAME: ${{ secrets.DB_USERNAME }}
-      PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DATABASE: ${{ secrets.DATABASE }}
-      HOST: postgres
+
     steps:
       # Downloads a copy of the code in your repository before running CI tests
       - name: Check out repository code
@@ -29,10 +34,8 @@ jobs:
       # Performs a clean installation of all dependencies in the `package.json` file
       # For more information, see https://docs.npmjs.com/cli/ci.html
       - name: Install dependencies
-        run: npm ci && npm test
-        env:
-          # The hostname used to communicate with the PostgreSQL service container
-          POSTGRES_HOST: ${{ secrets.DB_HOST }}
-          # The default PostgreSQL port
-          POSTGRES_PORT: 5432
+        run: npm ci
+      - name: Run tests
+        run: npm test
+
   
