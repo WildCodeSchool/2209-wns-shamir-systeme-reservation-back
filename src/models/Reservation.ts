@@ -39,6 +39,7 @@ export default class Reservation {
   @JoinColumn({ name: "product_id" })
   product: Product;
 
+  @Field(() => Order)
   @ManyToOne(() => Order, (order: Order) => order.reservations, { eager: true })
   @JoinColumn({ name: "order_id" })
   order: Order;
