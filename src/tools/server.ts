@@ -22,14 +22,10 @@ async function createServer(): Promise<ApolloServer> {
 
     // lié au décorateur @Authorized(["ADMIN"])
     authChecker: ({ context }, roles) => {
-      // console.log("Context ", context);
-      // console.log("Roles ", roles);
-
       const rolesUser = [];
       for (const role in context.user.role) {
         rolesUser.push(context.user.role[role].name);
       }
-
       // si user pas connecté
       if (context.user === undefined) {
         return false;
