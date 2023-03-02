@@ -18,6 +18,7 @@ jobs:
           POSTGRES_USER: ${{ secrets.DB_USERNAME }}
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
           POSTGRES_DB: ${{ secrets.DATABASE }}
+          POSTGRES_HOST: db
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -40,8 +41,3 @@ jobs:
 
       - name: Run tests
         run: npm test
-        env:
-          # The hostname used to communicate with the PostgreSQL service container
-          POSTGRES_HOST: db
-          # The default PostgreSQL port
-          POSTGRES_PORT: 5432
