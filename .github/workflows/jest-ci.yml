@@ -28,7 +28,7 @@ jobs:
   # Performs a clean installation of all dependencies in the `package.json` file
   # For more information, see https://docs.npmjs.com/cli/ci.html
   - name: Install dependencies
-    run: npm ci && npm test
+    run: npm i && npm test
     env:
       # The hostname used to communicate with the PostgreSQL service container
       POSTGRES_HOST: ${{ secrets.DB_HOST }}
