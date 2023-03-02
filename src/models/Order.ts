@@ -30,6 +30,7 @@ export default class Order {
   @Column({ type: "int" })
   status: number;
 
+  @Field(() => [Reservation], {nullable: true})
   @OneToMany(() => Reservation, (reservation: Reservation) => reservation.order)
   reservations?: Reservation[];
 
