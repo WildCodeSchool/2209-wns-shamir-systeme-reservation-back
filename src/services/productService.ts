@@ -34,6 +34,7 @@ export default {
     const newDateFrom: Date = new Date(dateFrom);
     const newDateTo: Date = new Date(dateTo);
 
+    // on récupère tous les produits réservés entre la date de début et de fin saisies par le client
     const reservationBooked = await reservationRepository
       .createQueryBuilder("reservation")
       .innerJoinAndSelect("reservation.product", "product")
@@ -47,18 +48,23 @@ export default {
       )
       .getMany();
 
+    // puis on récupère tous les id des produits réservés sur la période
     const productsBookedsIds = reservationBooked.map(
       (reservation: Reservation): number | undefined => {
         return reservation.product.id;
       }
     );
 
+    // dans le tableau des id on compte combien de fois chaque id apparaît et on compare avec le stock initial
     const productsFilteredByDate = allProducts.filter(
       (product: Product): Product | undefined => {
         let productBookedQuantity = productsBookedsIds.filter(
           (id) => id === product.id
         ).length;
+        // si le nombre de produits réservés est inférieur à la quantité initiale on renvoie le produit
         if (productBookedQuantity < product.quantity) {
+          // on récupère le stock restant et on l'attribue au champ quantity des produits filtrés
+          product.quantity = product.quantity - productBookedQuantity;
           return product;
         }
       }

@@ -14,6 +14,13 @@ const getByEmail = async (email: string): Promise<User | null> => {
   });
 };
 
+const getById = async (id: number): Promise<User | null> => {
+  return await repository.findOne({
+    relations: { roles: true, orders: true },
+    where: { id: id },
+  });
+};
+
 const getAll = async (): Promise<User[]> => {
   return await repository.find({
     relations: { roles: true, orders: true },
@@ -54,6 +61,7 @@ const update = async (userId: number, dataUser: userType): Promise<User | null> 
 
 export default {
   getByEmail,
+  getById,
   create,
   getAll,
   isAdmin,
