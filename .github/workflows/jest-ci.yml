@@ -3,8 +3,24 @@ name: jest-ci
 on: push
 
 jobs:
-  test-front:
+  test-back:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DATABASE }}
+        ports:
+          - 5432:5432
+    env:
+      PORT: ${{ secrets.PORT }}
+      DBPORT: 5432
+      USERNAME: ${{ secrets.DB_USERNAME }}
+      PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DATABASE: ${{ secrets.DATABASE }}
+      HOST: postgres
     steps:
       - name: Check out code
         uses: actions/checkout@v2
