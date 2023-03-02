@@ -42,11 +42,3 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-
-  testrunner:
-    build: ./testrunner
-    volumes:
-      - ./testrunner/src/:/app/src/
-    depends_on:
-      backend:
-        condition: service_healthy
