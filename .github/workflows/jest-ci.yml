@@ -21,17 +21,18 @@ jobs:
       PASSWORD: ${{ secrets.DB_PASSWORD }}
       DATABASE: ${{ secrets.DATABASE }}
       HOST: postgres
+  steps:
     # Downloads a copy of the code in your repository before running CI tests
-  - name: Check out repository code
-    uses: actions/checkout@v3
+    - name: Check out repository code
+      uses: actions/checkout@v3
 
-  # Performs a clean installation of all dependencies in the `package.json` file
-  # For more information, see https://docs.npmjs.com/cli/ci.html
-  - name: Install dependencies
-    run: npm i && npm test
-    env:
-      # The hostname used to communicate with the PostgreSQL service container
-      POSTGRES_HOST: ${{ secrets.DB_HOST }}
-      # The default PostgreSQL port
-      POSTGRES_PORT: 5432
+    # Performs a clean installation of all dependencies in the `package.json` file
+    # For more information, see https://docs.npmjs.com/cli/ci.html
+    - name: Install dependencies
+      run: npm ci && npm test
+      env:
+        # The hostname used to communicate with the PostgreSQL service container
+        POSTGRES_HOST: ${{ secrets.DB_HOST }}
+        # The default PostgreSQL port
+        POSTGRES_PORT: 5432
   
