@@ -38,6 +38,14 @@ export default class User {
   @Column({ type: "varchar" })
   password: string;
 
+  @Field()
+  @Column({ type: "varchar", nullable: true })
+  token_reset?: string;
+
+  @Field()
+  @Column({ type: "varchar", nullable: true })
+  update_reset?: string;
+
   @Field(() => [Order])
   @OneToMany(() => Order, (order: Order) => order.user, { eager: true })
   orders?: Order[];

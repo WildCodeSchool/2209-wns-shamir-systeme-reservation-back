@@ -3,6 +3,7 @@ import User from "../models/User";
 import authService from "../services/authService";
 import userService from "../services/userService";
 import userType from '../inputs/UserType';
+import mailjet from "./mailjet";
 
 @Resolver(User)
 export class UserResolver {
@@ -26,34 +27,35 @@ export class UserResolver {
     return await userService.getByEmail(Object.values(userPayload)[0]);
   }
 
+  
   @Mutation(() => User)
   async updateUser(
     @Arg("userId") userId: number,
     @Arg("userData") userData: userType
-  ): Promise<any> {
-    return await userService.update(userId, userData);
-  }
-
-  @Mutation(() => String)
-  async createUser(
-    @Arg("firstname") firstname: string,
-    @Arg("lastname") lastname: string,
-    @Arg("phone") phone: string,
-    @Arg("email") email: string,
-    @Arg("password") password: string,
-    @Arg("passwordConfirm") passwordConfirm: string
-  ): Promise<String> {
-    console.log("user inscrit");
-
-    // confirm double password
-    if (password != passwordConfirm) {
-      throw new Error("Password is not confirmed");
+    ): Promise<any> {
+      return await userService.update(userId, userData);
     }
-
-    await userService.create(firstname, lastname, phone, email, password);
-    return "User create";
-  }
-
+    
+    @Mutation(() => String)
+    async createUser(
+      @Arg("firstname") firstname: string,
+      @Arg("lastname") lastname: string,
+      @Arg("phone") phone: string,
+      @Arg("email") email: string,
+      @Arg("password") password: string,
+      @Arg("passwordConfirm") passwordConfirm: string
+      ): Promise<String> {
+        console.log("user inscrit");
+        
+        // confirm double password
+        if (password != passwordConfirm) {
+          throw new Error("Password is not confirmed");
+        }
+        
+        await userService.create(firstname, lastname, phone, email, password);
+        return "User create";
+      }
+      
   //   method: post
   @Mutation(() => String)
   async getToken(
@@ -63,7 +65,7 @@ export class UserResolver {
     try {
       // get user in DB by email
       const user = await userService.getByEmail(email);
-
+      
       // check password
       if (user && (await authService.verifyPassword(password, user.password))) {
         // Create new token
@@ -71,7 +73,7 @@ export class UserResolver {
           email: user.email,
           role: user.roles,
         });
-
+        
         return token;
       } else {
         // if error direct catch
@@ -82,4 +84,82 @@ export class UserResolver {
       throw new Error("Invalid Auth");
     }
   }
+        
+  @Mutation(() => String!)
+  async resetPassword(
+    @Arg("email") email: string,
+  ): Promise<String> {
+    try {
+      // get user in DB by email
+      const user = await userService.getByEmail(email);
+      // @ts-ignore
+      const userId = user.id;
+      const userPass = user?.password;
+      // generate token
+      const token = Date.now() + Math.floor(Math.random() * 1000) + Math.random().toString(35).substring(2,12);
+      const date = new Date();
+      // update field token_reset of user
+      await userService.updateToken(userId, token, date.toString());
+
+      // @ts-ignore
+      // send mail with link + token
+      mailjet.sendResetPassword(email, user?.firstname, user?.lastname, token);
+      return `Un email à bien été envoyé à l'adresse suivante : ${email}`
+
+    } catch (error) {
+      console.log('====================================');
+      console.log('error dans le BACK ', error);
+      console.log('====================================');
+      throw new Error("Une erreur est survenue, assurez vous de renseigner un email valide.");
+    }
+  }
+
+  @Query(() => String)
+  async checkTokenResetPassword(@Arg("token") token: string): Promise<String> {
+      const user = await userService.getByTokenReset(token);
+      if(user !== null){  
+        // @ts-ignore
+        const updateReset = new Date(user.update_reset).getTime();
+
+        const diff = Math.abs(updateReset - Date.now());
+        const minutes = Math.floor((diff/1000)/60)
+
+        // if time update_reset > + 15 minutes
+        if(minutes > 15 ){
+          return "Le temps a expiré, veuillez refaire la procédure de réinitialisation du mot de passe";
+        }else{
+          return token;
+        }
+      }else {
+        return "Une erreur est survenue…";
+      }
+  }
+
+  @Mutation(() => String)
+  async modifyPassword(
+    @Arg("token") token: string,
+    @Arg("password") password: string,
+    @Arg("passwordConfirm") passwordConfirm: string
+  ): Promise<any> {
+    try {
+      // get user in DB by token
+      const user = await userService.getByTokenReset(token);
+      // @ts-ignore
+      const userId = user.id;
+      // confirm double password
+      if (password != passwordConfirm) {
+        throw new Error("Le mot de passe est incorrect");
+      }else{
+        await userService.modifyPassword(userId, password)
+        return "Le mot de passe à bien été modifié."
+      }
+
+    } catch (error) {
+      throw new Error("Le mot de passe est incorrect");
+    }
+  }
+
+
 }
+      
+      
