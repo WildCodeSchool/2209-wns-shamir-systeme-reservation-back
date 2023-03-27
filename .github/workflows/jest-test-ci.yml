@@ -32,4 +32,7 @@ jobs:
         run: npm run test
         env:
           JWT_SECRET_KEY: toto
+          MJ_APIKEY_PUBLIC:  ${{ secrets.MJ_APIKEY_PUBLIC }}
+          MJ_APIKEY_PRIVATE:  ${{ secrets.MJ_APIKEY_PRIVATE }}
+
         
