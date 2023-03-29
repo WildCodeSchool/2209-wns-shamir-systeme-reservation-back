@@ -1,4 +1,4 @@
-name: jest-docker-ci
+name: docker-image-ci
 
 on: push
 
@@ -20,4 +20,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/wildrent-back:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/wildrent-api:latest
