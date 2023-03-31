@@ -2,6 +2,7 @@ import { ReservationType } from "../inputs/ReservationType";
 import Order from "../models/Order";
 import Product from "../models/Product";
 import Reservation from "../models/Reservation";
+import stripe from "../resolvers/stripe";
 import { dataSource } from "../tools/utils";
 import userService from "./userService";
 
@@ -32,12 +33,14 @@ const orderService = {
     return order;
   },
 
-  create : async (reservations: ReservationType[], userId: number) : Promise<Order | null> => {
+  create : async (reservations: ReservationType[], userId: number) : Promise<any[] | null> => {
     // on comptabilise le total de toutes les réservations
     let totalOrder = 0
+    const products: any[] = []
     reservations.forEach(reservation => {
       totalOrder += reservation.price;
       console.log(totalOrder)
+      products.push(reservation.product);
     });
     // on récupère un objet client
     const user = await userService.getById(userId)
@@ -55,7 +58,11 @@ const orderService = {
       reservations.map(async (reservation) => {
         await reservationRepository.save({...reservation, status : 1, order : order})
       })
-      return order;
+
+      products.push(user.email);
+      // return order;
+      return products;
+
     } else return null
   }
 }
