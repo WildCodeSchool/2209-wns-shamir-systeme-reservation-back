@@ -35,13 +35,11 @@ const orderService = {
 
   create : async (reservations: ReservationType[], userId: number) : Promise<any[] | null> => {
     // on comptabilise le total de toutes les réservations
-    let totalOrder = 0
-    const products: any[] = []
+    let totalOrder: number = 0
     reservations.forEach(reservation => {
       totalOrder += reservation.price;
-      console.log(totalOrder)
-      products.push(reservation.product);
     });
+
     // on récupère un objet client
     const user = await userService.getById(userId)
     if (user !== null) {
@@ -59,9 +57,7 @@ const orderService = {
         await reservationRepository.save({...reservation, status : 1, order : order})
       })
 
-      products.push(user.email);
-      // return order;
-      return products;
+      return reservations;
 
     } else return null
   }

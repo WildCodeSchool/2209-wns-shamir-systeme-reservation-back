@@ -4,23 +4,25 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const domain = 'http://localhost:3000/'
 
-const orderPayment = async (products: any) => {
-    let email = products.at(-1)
+const orderPayment = async (reservations: any) => {
 
-    const listProduct = products.slice(0, products.length - 1);
-    const lineItems = listProduct.map((product: any) => ({
+    let totalPrice: number = 0
+    reservations.forEach((product: any) => {
+      totalPrice += product.price;
+    });
+
+    const lineItems = [{
         price_data: {
             currency: 'eur',
             product_data: {
-                name: product.name,
+                name: "Commande numero " + Math.floor(Math.random() * 100),
             },
-            unit_amount: product.price * 100,
+            unit_amount: totalPrice * 100,
         },
-        quantity: 1,
-    }));
+        quantity: 1
+    }];
     
     const session = await stripe.checkout.sessions.create({
-        // customer_email: email,
         line_items: lineItems,
         mode: 'payment',
         success_url: domain + "commande/valide",

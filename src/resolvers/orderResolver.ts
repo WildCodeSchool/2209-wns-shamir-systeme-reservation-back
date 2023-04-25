@@ -21,14 +21,6 @@ export class OrderResolver {
   ): Promise<Order[] | null> {
     return await orderService.getById(id);
   }
-
-  // @Mutation(() => Order)
-  // async createOrder(
-  //   @Arg("reservations", type => [ReservationType]) reservations: ReservationType[],
-  //   @Arg("userId") userId: number,
-  // ): Promise<Order | null> {
-  //   return await orderService.create(reservations, userId);
-  // }
   
   @Mutation(() => String)
   async createOrder(
