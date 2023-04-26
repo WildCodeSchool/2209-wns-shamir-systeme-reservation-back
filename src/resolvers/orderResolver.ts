@@ -17,9 +17,10 @@ export class OrderResolver {
 
   @Query(() => [Order])
   async getOrderById(
-    @Arg("id") id: string,
+    @Arg("orderId") orderId: number,
+    @Arg("userId") userId: number,
   ): Promise<Order[] | null> {
-    return await orderService.getById(id);
+    return await orderService.getById(orderId, userId);
   }
   
   @Mutation(() => String)
