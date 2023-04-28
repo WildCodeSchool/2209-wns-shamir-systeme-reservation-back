@@ -1,23 +1,19 @@
 import dotenv from "dotenv";
+import Order from "../models/Order";
 dotenv.config()
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const domain = 'http://localhost:3000/'
 
-const orderPayment = async (reservations: any) => {
-
-    let totalPrice: number = 0
-    reservations.forEach((product: any) => {
-      totalPrice += product.price;
-    });
+const orderPayment = async (order: Order) => {
 
     const lineItems = [{
         price_data: {
             currency: 'eur',
             product_data: {
-                name: "Commande numero " + Math.floor(Math.random() * 100),
+                name: "Commande numero " + order.id,
             },
-            unit_amount: totalPrice * 100,
+            unit_amount: order.total_price * 100,
         },
         quantity: 1
     }];
