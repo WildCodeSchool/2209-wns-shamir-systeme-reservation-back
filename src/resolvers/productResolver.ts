@@ -21,12 +21,6 @@ export class ProductResolver {
     @Arg("dateFrom") dateFrom: string,
     @Arg("dateTo") dateTo: string
   ): Promise<Product[]> {
-    console.log('====================================');
-    console.log(dateFrom);
-    console.log('====================================');
-    console.log('====================================');
-    console.log(dateTo);
-    console.log('====================================');
     return await productService.getByDate(dateFrom, dateTo);
   }
 

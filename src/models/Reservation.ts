@@ -40,7 +40,7 @@ export default class Reservation {
   product: Product;
 
   @Field(() => Order)
-  @ManyToOne(() => Order, (order: Order) => order.reservations, { eager: true })
+  @ManyToOne(() => Order, (order: Order) => order.reservations, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: "order_id" })
   order: Order;
 }
