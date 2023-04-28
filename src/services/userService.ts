@@ -59,23 +59,18 @@ const update = async (userId: number, dataUser: userType): Promise<User | null> 
   return repository.findOneBy({ id: userId });
 };
 
-const updateToken = async (userId: number, token: string, date: string): Promise<any> => {
+const updateToken = async (userId: number, token: string, date: string): Promise<void> => {
   await repository.update(userId, {token_reset: token});
   await repository.update(userId, {update_reset: date});
-  return repository.findOneBy({ id: userId });
 };
 
 const getByTokenReset = async (token: string): Promise<User | null> => {
-  return await repository.findOne({
-    relations: { roles: true, orders: true },
-    where: { token_reset: token },
-  });
+  return await repository.findOneBy({token_reset: token });
 };
 
-const modifyPassword = async (userId: number, password: string): Promise<User | null> => {
+const modifyPassword = async (userId: number, password: string): Promise<void> => {
   const newPassword = await argon2.hash(password);
   await repository.update(userId, {password: newPassword});
-  return repository.findOneBy({ id: userId });
 };
 
 export default {
