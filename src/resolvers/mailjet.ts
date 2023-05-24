@@ -19,7 +19,7 @@ const sendResetPassword = async (email: string, firstname: string, lastname: str
         {
             From: {
                 Email: 'wwildrent@gmail.com',
-                Name: "WildBooking"
+                Name: 'WildBooking'
             },
             To: [
             {
@@ -49,21 +49,22 @@ const sendResetPassword = async (email: string, firstname: string, lastname: str
 
 };
 
-const sendSimpleMail = async (email: string) => {
+const fromContactForm = async (name: string, mail: string, subject: string, message: string) => {
     const data: SendEmailV3_1.Body = {
         Messages: [
         {
             From: {
             Email: 'wwildrent@gmail.com',
-            Name: "2eme EMAIL"
+            Name: 'WildBooking'
             },
             To: [
             {
-                Email: email,
+                Email: 'wwildrent@gmail.com',
+                Name: mail
             },
             ],
-            Subject: '2eme Email poto',
-            HTMLPart: 'ET VOICI LE CONTENU DU MAIL',
+            Subject: `Message de ${name} ${subject}`,
+            HTMLPart: message,
         },
     ],};
   
@@ -81,6 +82,6 @@ const sendSimpleMail = async (email: string) => {
 };
 
 export default {
-    sendSimpleMail,
+    fromContactForm,
     sendResetPassword
 };

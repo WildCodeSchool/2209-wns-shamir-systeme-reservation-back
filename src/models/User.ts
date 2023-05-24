@@ -42,6 +42,7 @@ export default class User {
   @Column({ type: "varchar", nullable: true })
   token_reset?: string;
 
+  // correspond à la date de réinitialisation du mot de passe
   @Field()
   @Column({ type: "varchar", nullable: true })
   update_reset?: string;
