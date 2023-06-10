@@ -64,7 +64,7 @@ const orderService = {
       const order = await orderRepository.save(orderData);
       // on crée les réservations
       reservations.map(async (reservation) => {
-        await reservationRepository.save({...reservation, status : 1, order : order})
+        await reservationRepository.save({...reservation, status : 2, order : order})
       })
       return order.id;
 
@@ -73,6 +73,20 @@ const orderService = {
 
   validate: async (orderId: number) : Promise<number | null> => {
     const order = await orderRepository.update(orderId, {status: 1})
+    const reservations = await reservationRepository.find({
+      relations: {
+        order: true,
+      },
+      where: {
+        order: {
+          id: orderId,
+        }
+      }
+    })
+    reservations.map(async (reservation) => {
+      await reservationRepository.update(reservation.id, {status : 1})
+    })
+    
     return orderId;
   },
 

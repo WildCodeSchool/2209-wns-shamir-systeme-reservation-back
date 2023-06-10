@@ -38,12 +38,12 @@ export default {
     const reservationBooked = await reservationRepository
       .createQueryBuilder("reservation")
       .innerJoinAndSelect("reservation.product", "product")
-      .where(
-        "reservation.start BETWEEN :newDateFrom AND :newDateTo OR reservation.end BETWEEN :newDateFrom AND :newDateTo",
+      .andWhere(
+        "reservation.status = 1 AND reservation.start BETWEEN :newDateFrom AND :newDateTo OR reservation.status = 1 AND reservation.end BETWEEN :newDateFrom AND :newDateTo",
         { newDateFrom, newDateTo }
       )
       .orWhere(
-        " :newDateFrom BETWEEN reservation.start AND reservation.end OR :newDateTo BETWEEN reservation.start AND reservation.end",
+        "reservation.status = 1 AND :newDateFrom BETWEEN reservation.start AND reservation.end OR reservation.status = 1 AND :newDateTo BETWEEN reservation.start AND reservation.end",
         { newDateFrom, newDateTo }
       )
       .getMany();
