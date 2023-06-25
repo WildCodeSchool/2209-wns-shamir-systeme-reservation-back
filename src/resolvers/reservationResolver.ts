@@ -5,7 +5,7 @@ import reservationService from "../services/reservationService";
 
 @Resolver(Reservation)
 export class ReservationResolver {
-  // @Authorized(["ADMIN"])
+  @Authorized(["ADMIN"])
   @Query(() => [Reservation])
   async getAllReservations(): Promise<Reservation[]> {
     return await reservationService.getAll();
