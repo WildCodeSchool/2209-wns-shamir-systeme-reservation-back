@@ -3,6 +3,7 @@ import { ReservationType } from "../inputs/ReservationType";
 import Order from "../models/Order";
 import orderService from "../services/orderService";
 import stripeService from "../services/stripeService";
+import PaymentSheetType from "../inputs/PaymentSheetType";
 
 
 @Resolver(Order)
@@ -61,5 +62,10 @@ export class OrderResolver {
       return stripeService.orderPayment(order);
     }
     return null
+  }
+
+  @Mutation(() => PaymentSheetType)
+  async paymentSheetMobile(@Arg("totalAmount") totalAmount: number,) : Promise<PaymentSheetType> {
+    return stripeService.paymentSheetMobile(totalAmount)
   }
 }
