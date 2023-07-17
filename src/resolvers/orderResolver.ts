@@ -23,6 +23,12 @@ export class OrderResolver {
   ): Promise<Order | null> {
     return await orderService.getById(orderId, userId);
   }
+
+  @Query(() => [Order])
+  @Authorized(["ADMIN"])
+  async getAllOrders(): Promise<Order[]> {
+    return await orderService.getAllOrders();
+  }
   
   @Mutation(() => Int)
   async createOrder(
