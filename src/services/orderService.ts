@@ -43,6 +43,19 @@ const orderService = {
    
   },
 
+  getAllOrders: async (): Promise<Order[]> => {
+    const Orders = await orderRepository.find({
+      relations: {
+        user: true,
+        reservations : {product: true},
+      },
+      order: {
+        id: "DESC",
+      },
+    });
+    return Orders;
+  },
+
   create : async (reservations: ReservationType[], userId: number) : Promise<number | null> => {
     // on comptabilise le total de toutes les réservations
     let totalOrder: number = 0
